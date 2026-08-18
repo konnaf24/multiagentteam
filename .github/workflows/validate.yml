@@ -1,0 +1,26 @@
+name: Validate repository
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate repository structure
+        run: ./scripts/validate.sh
+      - name: Smoke test case scaffolding
+        run: |
+          test_root="$(mktemp -d)"
+          cp -a . "$test_root/repository"
+          "$test_root/repository/scripts/new-case.sh" smoke-case "Smoke Case"
+          test -f "$test_root/repository/cases/smoke-case/CASE.md"
+          test -f "$test_root/repository/cases/smoke-case/CLAIMS.md"
+          test -f "$test_root/repository/tasks/smoke-case/TASK-001.md"
+          ! grep -R '{{CASE_' "$test_root/repository/cases/smoke-case" \
+            "$test_root/repository/tasks/smoke-case"
