@@ -71,3 +71,5 @@ evidence.
 
 See [AGENTS.md](AGENTS.md) for the investigation contract and
 [docs/workflow.md](docs/workflow.md) for the full workflow.
+
+> Pull request review branch for the Copilot multi-agent network investigation lab.
